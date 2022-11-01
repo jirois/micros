@@ -17,6 +17,17 @@ app.get("/", (req, res) => {
   res.send("Welcome home!");
 });
 
+app.get("/setcookies", (req, res) => {
+  res.cookie("cookie name", "encrypted cookie sent!", {
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 10000,
+  });
+  res.send("cookie sent successfully");
+});
+app.get("/getcookies", (req, res) => {
+  res.send(req.cookies);
+});
 const PORT = process.env.PORT || 5440;
 
 const start = async () => {
