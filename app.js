@@ -8,6 +8,10 @@ import cookieParser from "cookie-parser";
 import connectDb from "./db/dbConnect.js";
 const app = express();
 
+// middleware section
+import errorHandlerMiddleware from "./middleware/error-handler.js";
+import notFoundMiddleware from "./middleware/notFound-handler.js";
+
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
@@ -17,17 +21,9 @@ app.get("/", (req, res) => {
   res.send("Welcome home!");
 });
 
-app.get("/setcookies", (req, res) => {
-  res.cookie("cookie name", "encrypted cookie sent!", {
-    httpOnly: true,
-    sameSite: "lax",
-    maxAge: 10000,
-  });
-  res.send("cookie sent successfully");
-});
-app.get("/getcookies", (req, res) => {
-  res.send(req.cookies);
-});
+app.use(errorHandlerMiddleware);
+app.use(notFoundMiddleware);
+
 const PORT = process.env.PORT || 5440;
 
 const start = async () => {
