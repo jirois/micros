@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
+import connectDb from "./db/dbConnect.js";
 const app = express();
 
 app.use(express.json());
@@ -18,6 +19,14 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5440;
 
-app.listen(PORT, () => {
-  console.log(`Server serving at port ${PORT}`);
-});
+const start = async () => {
+  try {
+    await connectDb(process.env.MONGO_URI);
+
+    app.listen(PORT, () => {
+      console.log(`Server serving at port ${PORT}`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
