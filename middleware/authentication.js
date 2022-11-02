@@ -1,5 +1,7 @@
 import { attachCookiesToResponse, isTokenValid } from "../utils/jwt.js";
 import Token from "../models/Token.js";
+import UnAuthorizedError from "../errors/unauthorized.js";
+import UnAuthenticatedError from "../errors/unauthenticate.js";
 
 const authenticateUser = async (req, res, next) => {
   const { accessToken, refreshToken } = req.signedCookies();
@@ -39,3 +41,5 @@ const authorization = (...roles) => {
     next();
   };
 };
+
+export { authenticateUser, authorization };
